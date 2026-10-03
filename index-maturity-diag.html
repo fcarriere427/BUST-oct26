@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diagnostic express de maturité IA — Énergie</title>
+  <style>
+    :root { --ink:#1E1145; --ink-2:#29175a; --green:#04F06A; --blue:#73b8ff; --violet:#b497ff; --muted:#c9c3df; --line:rgba(255,255,255,.17); }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color:#fff; background:var(--ink); line-height:1.45; }
+    button { font:inherit; cursor:pointer; }
+    .shell { max-width:1440px; margin:0 auto; padding:48px 32px 72px; }
+    .hero { display:flex; align-items:flex-start; justify-content:space-between; gap:28px; border-bottom:1px solid var(--line); padding-bottom:30px; }
+    .eyebrow { margin:0 0 10px; color:var(--green); font-size:.77rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+    h1 { max-width:800px; margin:0; font-size:clamp(2rem,4vw,3.45rem); line-height:1.03; letter-spacing:-.045em; }
+    .intro { max-width:720px; margin:18px 0 0; color:var(--muted); font-size:1.06rem; }
+    .badge { flex:none; padding:9px 13px; border:1px solid var(--green); border-radius:999px; color:var(--green); font-size:.78rem; font-weight:800; white-space:nowrap; }
+    .toolbar { display:flex; justify-content:space-between; align-items:center; gap:20px; padding:26px 0; }
+    .tabs { display:flex; gap:6px; padding:5px; border:1px solid var(--line); border-radius:10px; }
+    .tab { border:0; border-radius:6px; padding:10px 17px; background:transparent; color:var(--muted); font-weight:800; }
+    .tab.active { background:var(--green); color:var(--ink); }
+    .actions { display:flex; flex-wrap:wrap; gap:10px; }
+    .button { border:1px solid var(--green); border-radius:7px; padding:10px 14px; background:var(--green); color:var(--ink); font-size:.9rem; font-weight:850; }
+    .button.secondary { background:transparent; color:#fff; border-color:var(--line); }
+    .profile-note { margin:0 0 22px; color:var(--muted); font-size:.94rem; }
+    .question-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+    .domain { overflow:hidden; border:1px solid var(--line); border-radius:12px; background:rgba(255,255,255,.035); }
+    .domain-head { padding:17px 19px 14px; border-bottom:1px solid var(--line); }
+    .domain-number { color:var(--green); font-size:.76rem; font-weight:900; letter-spacing:.09em; }
+    h2 { margin:5px 0 0; font-size:1.07rem; line-height:1.2; }
+    .question { padding:17px 19px 19px; }
+    .question + .question { border-top:1px solid var(--line); }
+    .question-title { display:block; min-height:48px; margin-bottom:12px; font-weight:730; font-size:.94rem; }
+    .scale { display:grid; grid-template-columns:repeat(4,1fr); gap:7px; }
+    .scale button { min-height:94px; padding:9px 8px; border:1px solid var(--line); border-radius:7px; background:transparent; color:#fff; text-align:left; transition:.15s ease; }
+    .scale button:hover { border-color:var(--green); }
+    .scale button.selected { color:var(--ink); background:var(--green); border-color:var(--green); }
+    .level { display:block; margin-bottom:5px; font-size:.75rem; font-weight:900; }
+    .level-desc { display:block; font-size:.68rem; line-height:1.23; opacity:.9; }
+    .results { margin-top:46px; padding-top:35px; border-top:1px solid var(--line); }
+    .section-heading { display:flex; justify-content:space-between; gap:20px; align-items:baseline; margin-bottom:21px; }
+    .section-heading h2 { font-size:1.55rem; }
+    .section-heading p { margin:0; color:var(--muted); font-size:.9rem; }
+    .result-grid { display:grid; grid-template-columns:minmax(360px,.95fr) minmax(400px,1.05fr); gap:28px; align-items:start; }
+    .radar-card, .insights { padding:24px; border:1px solid var(--line); border-radius:12px; background:rgba(255,255,255,.035); }
+    #radar { display:block; width:100%; max-width:510px; margin:0 auto; overflow:visible; }
+    .legend { display:flex; justify-content:center; flex-wrap:wrap; gap:18px; margin-top:8px; font-size:.84rem; font-weight:700; }
+    .legend span::before { content:""; display:inline-block; width:10px; height:10px; margin-right:7px; border-radius:50%; background:currentColor; }
+    .legend .direction { color:var(--green); }.legend .terrain { color:var(--blue); }
+    .scores { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; }
+    .score { padding:17px; border-radius:9px; background:var(--ink-2); }
+    .score-label { display:block; color:var(--muted); font-size:.82rem; font-weight:750; }.score-value { display:block; margin-top:3px; font-size:2.25rem; font-weight:900; letter-spacing:-.06em; }.score-value.direction { color:var(--green); }.score-value.terrain { color:var(--blue); }
+    .insights h3 { margin:6px 0 14px; font-size:1.03rem; }.recommendation { padding:15px 0; border-top:1px solid var(--line); }.recommendation:first-of-type { border-top:0; }.recommendation h4 { margin:0 0 6px; font-size:.96rem; }.recommendation p { margin:0; color:var(--muted); font-size:.88rem; }.alert { margin:16px 0 0; padding:13px 14px; border-left:3px solid var(--green); background:rgba(4,240,106,.09); color:#ddffe9; font-size:.87rem; }.alert strong { color:var(--green); }
+    .empty { color:var(--muted); font-size:.92rem; }
+    footer { margin-top:32px; color:#9f97be; font-size:.78rem; }
+    @media(max-width:850px) { .hero,.toolbar { align-items:flex-start; flex-direction:column; }.question-grid,.result-grid { grid-template-columns:1fr; }.result-grid { gap:18px; }.shell { padding:30px 18px 50px; } }
+    @media(max-width:460px) { .scale { grid-template-columns:repeat(2,1fr); }.scale button { min-height:73px; }.question-title { min-height:auto; }.scores { grid-template-columns:1fr; } }
+    @media print { @page { margin:12mm; } body { background:#fff; color:#161127; font-size:10pt; }.shell { max-width:none; padding:0; }.hero { border-color:#ddd; }.badge { border-color:#008b3d; color:#007531; } .eyebrow { color:#007531; } .intro,.profile-note,.section-heading p,.recommendation p,.empty { color:#474158; }.toolbar,.questions-section, footer { display:none !important; }.results { display:block !important; margin-top:20px; padding-top:15px; border-color:#ddd; }.radar-card,.insights,.domain { background:#fff; border-color:#ddd; }.result-grid { grid-template-columns:1fr 1fr; gap:16px; }.scores { gap:8px; }.score { background:#f4f2f8; }.score-value.direction { color:#008b3d; }.score-value.terrain { color:#1669b2; }.alert { color:#183423; background:#effbf3; }.legend .direction { color:#008b3d; }.legend .terrain { color:#1669b2; } }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero"><div><p class="eyebrow">Atelier comité de direction</p><h1>Diagnostic express de maturité IA</h1><p class="intro">Un regard croisé Direction / Terrain pour aligner l'ambition IA d'un énergéticien avec les réalités de production, de réseaux et de commercialisation.</p></div><span class="badge">Données fictives — démonstration</span></header>
+    <section class="questions-section" aria-labelledby="questions-title"><div class="toolbar"><div class="tabs" role="tablist" aria-label="Profil répondant"><button class="tab active" role="tab" aria-selected="true" data-profile="direction">Direction</button><button class="tab" role="tab" aria-selected="false" data-profile="terrain">Terrain</button></div><div class="actions"><button class="button secondary" id="example">Remplir avec un exemple</button><button class="button" id="print">Exporter en PDF</button></div></div><p class="profile-note" id="profile-note">Évaluez le niveau de maturité tel qu'il est perçu par la <strong>Direction</strong>. Chaque réponse est enregistrée indépendamment.</p><div class="question-grid" id="questions" aria-label="Questions de diagnostic"></div></section>
+    <section class="results" aria-labelledby="results-title"><div class="section-heading"><h2 id="results-title">Résultat consolidé</h2><p>Les scores se mettent à jour à chaque réponse.</p></div><div class="result-grid"><article class="radar-card"><svg id="radar" viewBox="0 0 520 460" role="img" aria-label="Graphique radar de maturité IA comparant Direction et Terrain"></svg><div class="legend"><span class="direction">Direction</span><span class="terrain">Terrain</span></div></article><aside class="insights"><div class="scores"><div class="score"><span class="score-label">Score global Direction</span><strong class="score-value direction" id="direction-score">—</strong></div><div class="score"><span class="score-label">Score global Terrain</span><strong class="score-value terrain" id="terrain-score">—</strong></div></div><h3>Priorités de transformation</h3><div id="recommendations"><p class="empty">Renseignez les questions pour identifier les priorités.</p></div><div id="blindspots"></div></aside></div></section>
+    <footer>Échelle : 1 — embryonnaire · 2 — initiatives isolées · 3 — structuré · 4 — généralisé.</footer>
+  </main>
+  <script>
+    const domains = [
+      {name:'Stratégie, organisation et gouvernance de l’IA', questions:[
+        ['La stratégie IA est-elle priorisée et reliée aux enjeux de décarbonation, de sûreté et de performance ?', ['Aucune ambition IA formalisée.','Quelques cas d’usage sans priorités communes.','Feuille de route arbitrée et pilotée.','IA intégrée aux plans stratégiques et budgétaires.']],
+        ['Les responsabilités de décision, de risque et de valeur IA sont-elles claires ?', ['Aucun rôle ni instance identifiés.','Rôles définis au cas par cas.','Gouvernance transverse avec arbitrages réguliers.','Gouvernance outillée, suivie dans toutes les entités.']]
+      ]},
+      {name:'IA pour tous : acculturation, conduite du changement, impact sur les métiers', questions:[
+        ['Les équipes de centrales, réseaux, relation client et fonctions support comprennent-elles les usages et limites de l’IA ?', ['Aucune sensibilisation organisée.','Sensibilisation ponctuelle pour quelques équipes.','Parcours adaptés aux principaux métiers.','Acculturation continue accessible à tous.']],
+        ['Comment les impacts IA sur les rôles, compétences et dialogue social sont-ils accompagnés ?', ['Impacts non évalués.','Échanges réactifs à certains projets.','Impacts anticipés et plans métiers définis.','Transformation co-construite et suivie à grande échelle.']]
+      ]},
+      {name:'Refonte des processus métier par l’IA', questions:[
+        ['Dans quelle mesure l’IA transforme-t-elle les processus critiques, de la prévision à l’intervention réseau ?', ['Aucun processus redessiné.','PoC locaux sans refonte de bout en bout.','Quelques parcours cibles repensés avec l’IA.','IA intégrée aux processus critiques à l’échelle.']],
+        ['Les cas d’usage IA sont-ils mesurés sur leurs gains opérationnels, énergétiques et clients ?', ['Aucune mesure de valeur.','Indicateurs ponctuels, peu comparables.','KPIs communs suivis pour les cas prioritaires.','Valeur et effets rebond pilotés en continu.']]
+      ]},
+      {name:'Plateformes, données et socles techniques', questions:[
+        ['Les données de production, réseau, marché et clients sont-elles accessibles et fiables pour l’IA ?', ['Données silotées, qualité inconnue.','Accès manuel à quelques jeux de données.','Données prioritaires cataloguées et gouvernées.','Produits de données fiables et réutilisables à l’échelle.']],
+        ['Le socle technique permet-il de déployer des IA de manière industrialisée et frugale ?', ['Pas de socle adapté.','Environnements projets hétérogènes.','Plateforme partagée avec standards de déploiement.','Plateforme scalable, observée et optimisée énergétiquement.']]
+      ]},
+      {name:'Capacité à construire des solutions IA et des agents', questions:[
+        ['Les métiers et équipes numériques savent-ils concevoir ensemble des solutions IA utiles et exploitables ?', ['Aucune capacité identifiée.','Expertise limitée à quelques personnes ou prestataires.','Équipes produit IA pluridisciplinaires opérationnelles.','Capacité interne diffuse, réutilisation systématique.']],
+        ['Les agents IA sont-ils conçus, testés et supervisés pour les opérations et la relation client ?', ['Aucun agent étudié.','Expérimentations isolées non sécurisées.','Agents ciblés avec tests, supervision humaine et retours.','Portefeuille d’agents industrialisés et monitorés.']]
+      ]},
+      {name:'IA de confiance et sécurité', questions:[
+        ['Les exigences de sûreté, explicabilité, conformité et équité sont-elles intégrées aux projets IA ?', ['Aucun cadre spécifique.','Vérifications tardives, au cas par cas.','Exigences intégrées à la conception des projets.','Contrôles continus et preuves disponibles pour tous les usages.']],
+        ['Les risques cyber, de fuite de données et de dérive des modèles sont-ils maîtrisés ?', ['Risques non cartographiés.','Mesures ponctuelles selon les équipes.','Référentiel, contrôles et surveillance des cas sensibles.','Sécurité IA testée, monitorée et améliorée en continu.']]
+      ]}
+    ];
+    const recommendations = [
+      'Établissez une feuille de route IA commune aux activités de production, réseaux et commercialisation, avec des arbitrages de valeur et de risque au comité exécutif. Nommez des responsables métier et data pour chaque priorité afin de passer des expérimentations à l’exécution.',
+      'Lancez des parcours courts, concrets et différenciés pour les exploitants, techniciens réseau, conseillers clients et managers. Associez les représentants des métiers dès la conception pour sécuriser l’adoption et faire évoluer les compétences.',
+      'Ciblez deux parcours à fort enjeu — par exemple la maintenance prédictive et le traitement des demandes clients — puis redessinez-les de bout en bout. Mesurez les gains de disponibilité, de délai, de qualité de service et les effets énergétiques avant le déploiement.',
+      'Priorisez les données critiques de prévision, d’actifs et de clients dans des produits de données gouvernés et documentés. Standardisez ensuite la chaîne de déploiement pour assurer traçabilité, résilience et sobriété des modèles.',
+      'Constituez des équipes produit mêlant experts énergie, opérations, data et cybersécurité, responsables d’un portefeuille de cas d’usage. Encadrez les agents par des tests de scénarios, des seuils d’escalade et une supervision humaine sur les décisions sensibles.',
+      'Mettez en place un cadre de confiance IA proportionné aux risques des actifs critiques et des données personnelles. Testez les modèles avant et après mise en production, avec journalisation, contrôle d’accès et plans de réponse aux incidents.'
+    ];
+    const answers = { direction:Array(12).fill(null), terrain:Array(12).fill(null) }; let active='direction';
+    const flat = domains.flatMap((d, di) => d.questions.map((q, qi) => ({...d, question:q, di, qi})));
+    function renderQuestions(){ const root=document.getElementById('questions'); root.innerHTML=''; domains.forEach((d,di)=>{ const card=document.createElement('article'); card.className='domain'; card.innerHTML=`<div class="domain-head"><span class="domain-number">DOMAINE ${String(di+1).padStart(2,'0')}</span><h2>${d.name}</h2></div>`; d.questions.forEach((q,qi)=>{ const index=di*2+qi, item=document.createElement('div'); item.className='question'; const levelButtons=q[1].map((desc,n)=>`<button type="button" class="${answers[active][index]===n+1?'selected':''}" data-index="${index}" data-value="${n+1}" aria-pressed="${answers[active][index]===n+1}"><span class="level">${n+1}</span><span class="level-desc">${desc}</span></button>`).join(''); item.innerHTML=`<span class="question-title">${q[0]}</span><div class="scale" aria-label="Notation de 1 à 4">${levelButtons}</div>`; card.append(item); }); root.append(card); }); }
+    function averageByDomain(profile){ return domains.map((_,i)=>{const vals=answers[profile].slice(i*2,i*2+2); return vals.every(v=>v!==null)?vals.reduce((a,b)=>a+b,0)/2:null;}); }
+    function global(profile){const values=answers[profile].filter(v=>v!==null); return values.length?Math.round(values.reduce((a,b)=>a+b,0)/(values.length*4)*100):null;}
+    function point(cx,cy,r,angle){return [cx+Math.cos(angle)*r,cy+Math.sin(angle)*r];}
+    function renderRadar(){ const svg=document.getElementById('radar'), cx=260,cy=235,R=158, labels=domains.map(d=>d.name.split(' ').slice(0,3).join(' ')+'…'); let out=''; for(let l=1;l<=4;l++){out+=`<polygon points="${[0,1,2,3,4,5].map(i=>point(cx,cy,R*l/4,-Math.PI/2+i*Math.PI/3).join(',')).join(' ')}" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1"/>`; } for(let i=0;i<6;i++){const p=point(cx,cy,R,-Math.PI/2+i*Math.PI/3), t=point(cx,cy,R+34,-Math.PI/2+i*Math.PI/3); out+=`<line x1="${cx}" y1="${cy}" x2="${p[0]}" y2="${p[1]}" stroke="rgba(255,255,255,.22)"/><text x="${t[0]}" y="${t[1]}" fill="currentColor" text-anchor="middle" dominant-baseline="middle" font-size="10" font-weight="700">${labels[i]}</text>`;} [['direction','#04F06A'],['terrain','#73b8ff']].forEach(([profile,color])=>{const values=averageByDomain(profile);if(values.some(v=>v!==null)){const pts=values.map((v,i)=>point(cx,cy,R*((v||0)/4),-Math.PI/2+i*Math.PI/3).join(',')).join(' ');out+=`<polygon points="${pts}" fill="${color}" fill-opacity=".18" stroke="${color}" stroke-width="3"/>`;values.forEach((v,i)=>{if(v!==null){const p=point(cx,cy,R*v/4,-Math.PI/2+i*Math.PI/3);out+=`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="${color}"/>`;}})}});svg.innerHTML=out; }
+    function renderResults(){ ['direction','terrain'].forEach(p=>document.getElementById(p+'-score').textContent=global(p)===null?'—':global(p)+'/100'); const d=averageByDomain('direction'), t=averageByDomain('terrain'), complete=d.map((v,i)=>v!==null||t[i]!==null); const rank=domains.map((x,i)=>({i,score:((d[i]||0)+(t[i]||0))/((d[i]!==null?1:0)+(t[i]!==null?1:0)||1)})).filter(x=>complete[x.i]).sort((a,b)=>a.score-b.score).slice(0,3); document.getElementById('recommendations').innerHTML=rank.length?rank.map(x=>`<article class="recommendation"><h4>${domains[x.i].name}</h4><p>${recommendations[x.i]}</p></article>`).join(''):'<p class="empty">Renseignez les questions pour identifier les priorités.</p>'; const gaps=domains.map((x,i)=>d[i]!==null&&t[i]!==null&&Math.abs(d[i]-t[i])>1?`<strong>Angle mort — ${x.name} :</strong> écart de ${Math.abs(d[i]-t[i]).toFixed(1).replace('.',',')} point(s) entre Direction et Terrain.`:null).filter(Boolean); document.getElementById('blindspots').innerHTML=gaps.length?`<div class="alert">${gaps.join('<br>')}</div>`:''; renderRadar(); }
+    document.getElementById('questions').addEventListener('click',e=>{const b=e.target.closest('button[data-index]');if(!b)return;answers[active][+b.dataset.index]=+b.dataset.value;renderQuestions();renderResults();});
+    document.querySelectorAll('.tab').forEach(tab=>tab.addEventListener('click',()=>{active=tab.dataset.profile;document.querySelectorAll('.tab').forEach(x=>{const is=x===tab;x.classList.toggle('active',is);x.setAttribute('aria-selected',is);});document.getElementById('profile-note').innerHTML=`Évaluez le niveau de maturité tel qu'il est perçu par le profil <strong>${active==='direction'?'Direction':'Terrain'}</strong>. Chaque réponse est enregistrée indépendamment.`;renderQuestions();}));
+    document.getElementById('example').addEventListener('click',()=>{answers.direction=[4,3,4,3,3,3,3,3,3,3,3,3];answers.terrain=[2,2,2,2,2,2,2,2,2,1,2,2];renderQuestions();renderResults();}); document.getElementById('print').addEventListener('click',()=>window.print()); renderQuestions();renderResults();
+  </script>
+</body>
+</html>
