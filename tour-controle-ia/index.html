@@ -95,7 +95,15 @@ section{margin-bottom:1.1rem}
 .chev.first{clip-path:polygon(0 0,calc(100% - 1rem) 0,100% 50%,calc(100% - 1rem) 100%,0 100%);padding-left:1rem}
 .chev span{display:block;max-width:100%}
 .chev.actif{background:var(--accent);color:var(--on-accent)}
-.etape .nb{text-align:center;color:var(--muted);font-size:.78rem}
+.etape .desc{text-align:center;color:var(--muted);font-size:.76rem;line-height:1.25;min-height:2.5em;padding:0 .2rem}
+.etape .nb{text-align:center;font-size:.8rem;font-weight:650}
+.etape .val-etape{text-align:center;color:var(--muted);font-size:.74rem;font-variant-numeric:tabular-nums;margin-top:-.35rem}
+.etape .val-etape b{color:var(--accent);font-weight:650}
+.synthese{margin:-.35rem 0 .9rem;font-size:.9rem}
+.synthese b{color:var(--accent)}
+.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-bottom:.45rem}
+.phases div{text-align:center;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:650;border-bottom:2px solid var(--line);padding-bottom:.25rem}
+.phases .ph-valeur{color:var(--accent);border-color:var(--accent)}
 .dots{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;min-height:2rem}
 .dot{
   width:2rem;height:2rem;border-radius:50%;border:2px solid rgba(255,255,255,.25);cursor:pointer;
@@ -227,6 +235,7 @@ tfoot td{font-weight:700;border-bottom:0;border-top:2px solid var(--line)}
 
 /* Responsive */
 @media (max-width:1180px){
+  .phases{display:none}
   .frise{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:1rem}
   .chev:not(.first){clip-path:polygon(0 0,calc(100% - 1rem) 0,100% 50%,calc(100% - 1rem) 100%,0 100%,1rem 50%)}
 }
@@ -240,6 +249,9 @@ tfoot td{font-weight:700;border-bottom:0;border-top:2px solid var(--line)}
   .infos{grid-template-columns:1fr}
   .btn-pdf{padding:.5rem .8rem}
 }
+/* Hors des phases d'animation, aucun élément ne garde d'animation : rien ne peut rester masqué (impression notamment) */
+html:not(.intro) .card,html:not(.intro) .dot{animation:none!important}
+html:not(.anim) svg *,html:not(.anim) svg{animation:none!important}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
@@ -266,10 +278,10 @@ tfoot td{font-weight:700;border-bottom:0;border-top:2px solid var(--line)}
   .badge{font-size:8.5pt;padding:1mm 3mm}
   .perimetre{margin:0 0 2.5mm;font-size:8.5pt}
   section{margin-bottom:2.5mm}
-  .card{padding:2.5mm 3.5mm;border-radius:6px;box-shadow:none;break-inside:avoid}
+  .card{padding:2mm 3.5mm;border-radius:6px;box-shadow:none;break-inside:avoid}
   .kpis{grid-template-columns:repeat(4,1fr)!important;gap:3mm;margin-bottom:2.5mm}
   .kpi{padding:2mm 3.5mm}
-  .kpi .val{font-size:16pt;margin:0}
+  .kpi .val{font-size:15pt;margin:0;line-height:1.15}
   .kpi .lbl,.kpi .det{font-size:8pt}
   h2{font-size:10.5pt;margin-bottom:0}
   .aide{font-size:7.5pt;margin-bottom:1.5mm}
@@ -277,16 +289,24 @@ tfoot td{font-weight:700;border-bottom:0;border-top:2px solid var(--line)}
   .top>div{display:flex;flex-wrap:wrap;align-items:center;column-gap:4mm}
   .top h1{flex-basis:100%}
   .frise{grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:1.5mm}
-  .chev{min-height:9mm;font-size:8.5pt;padding:1mm 6mm 1mm 7mm}
+  .chev{min-height:8mm;font-size:8.5pt;padding:1mm 6mm 1mm 7mm}
   .chev.first{padding-left:4mm}
   .chev:not(.first){clip-path:polygon(0 0,calc(100% - 4mm) 0,100% 50%,calc(100% - 4mm) 100%,0 100%,4mm 50%)}
   .chev.first{clip-path:polygon(0 0,calc(100% - 4mm) 0,100% 50%,calc(100% - 4mm) 100%,0 100%)}
-  .etape{gap:1mm}
+  .etape{gap:.6mm}
   .etape .nb{font-size:7.5pt}
+  .etape .desc{font-size:7pt;min-height:0}
+  .etape .val-etape{font-size:7pt;margin-top:-.5mm}
+  .synthese{font-size:8.5pt;margin:0 0 1.5mm}
+  .phases{display:grid!important;margin-bottom:1mm}
+  .phases div{font-size:7pt;padding-bottom:.5mm}
   .dots{min-height:0;gap:1.2mm}
-  .dot{width:6mm;height:6mm;font-size:7.5pt;border-width:1px;color:#fff}
+  .dot{width:5mm;height:5mm;font-size:7.5pt;border-width:1px;color:#fff}
   .grid2{grid-template-columns:1fr 1fr!important;gap:3mm;margin-bottom:0}
-  .chart svg{height:66mm;width:100%}
+  .chart svg{height:50mm;width:100%}
+  .grid2 section{margin-bottom:0}
+  .intro-frise{display:none}
+  .chart .aide{margin-bottom:.5mm}
   .legende{font-size:7.5pt;margin-top:1mm}
   .bulle-num{fill:#fff}
   .idx{color:#fff}
@@ -346,8 +366,12 @@ tfoot td{font-weight:700;border-bottom:0;border-top:2px solid var(--line)}
   </section>
 
   <section class="card" style="animation-delay:.3s" aria-labelledby="tFrise">
-    <h2 id="tFrise">Chaîne de valeur IA</h2>
-    <p class="aide ecran">Position de chaque cas d'usage dans la chaîne de valeur. Survolez une pastille pour voir le cas, cliquez pour ouvrir sa fiche.</p>
+    <h2 id="tFrise">Où en sont nos cas d'usage ? De l'idée à la valeur captée</h2>
+    <p class="aide intro-frise">Chaque cas d'usage avance de gauche à droite en six étapes. Seules les deux dernières produisent une valeur mesurable : l'enjeu du pilotage est de faire passer les cas jusque-là, et d'arrêter ceux qui n'y arriveront pas.</p>
+    <p class="synthese" id="syntheseFrise"></p>
+    <div class="phases" aria-hidden="true">
+      <div>Concevoir</div><div>Construire et sécuriser</div><div class="ph-valeur">Produire de la valeur</div>
+    </div>
     <div class="frise" id="frise"></div>
     <div class="legende" id="legFrise"></div>
   </section>
@@ -409,6 +433,14 @@ tfoot td{font-weight:700;border-bottom:0;border-top:2px solid var(--line)}
     derive:  { label: "En dérive" },
     arreter: { label: "À arrêter" }
   };
+  var DESC_ETAPES = [
+    "Idée identifiée et priorisée",
+    "Cas d'affaires, données et indicateurs définis",
+    "Solution développée et testée en pilote",
+    "Risques, conformité et sécurité validés",
+    "Mise en service auprès des utilisateurs",
+    "Valeur mesurée et suivie dans la durée"
+  ];
   var ORDRE_STATUT = ["avance", "clous", "derive", "arreter"];
   var MOIS = ["oct. 2025", "nov. 2025", "déc. 2025", "janv. 2026", "févr. 2026", "mars 2026",
               "avr. 2026", "mai 2026", "juin 2026", "juil. 2026", "août 2026", "sept. 2026"];
@@ -500,8 +532,22 @@ tfoot td{font-weight:700;border-bottom:0;border-top:2px solid var(--line)}
     for (var m = 1; m <= 12; m++) out.push(m === 12 ? c.realisee : c.realisee * Math.pow(m / 12, c.forme));
     return out;
   }
-  function tracer(path) {
+  var racine = document.documentElement, minuteurAnim = null;
+  function lancerAnim(intro) {
     if (reduit) return;
+    if (intro) racine.classList.add("intro");
+    racine.classList.add("anim");
+    clearTimeout(minuteurAnim);
+    minuteurAnim = setTimeout(arreterAnim, 2600);
+  }
+  function arreterAnim() {
+    clearTimeout(minuteurAnim);
+    racine.classList.remove("intro", "anim");
+    document.querySelectorAll(".trace").forEach(function (p) { p.style.strokeDasharray = ""; p.classList.remove("trace"); });
+    finirAnimations();
+  }
+  function tracer(path) {
+    if (!racine.classList.contains("anim")) return;
     var len = path.getTotalLength();
     if (!len) return;
     path.style.setProperty("--len", len);
@@ -638,8 +684,12 @@ tfoot td{font-weight:700;border-bottom:0;border-top:2px solid var(--line)}
       var col = document.createElement("div");
       col.className = "etape";
       var actif = etat.etapes.indexOf(i) >= 0;
+      var vis = somme(cas, function (c) { return c.visee; }), rea = somme(cas, function (c) { return c.realisee; });
       col.innerHTML = '<div class="chev' + (i === 0 ? " first" : "") + (actif ? " actif" : "") + '"><span>' + nom + "</span></div>" +
-        '<div class="nb">' + cas.length + " cas</div><div class=\"dots\"></div>";
+        '<div class="desc">' + DESC_ETAPES[i] + "</div>" +
+        '<div class="nb">' + cas.length + " cas</div>" +
+        '<div class="val-etape">' + (cas.length ? "réalisé <b>" + fmtK(rea) + "</b> / visé " + fmtK(vis) : "&nbsp;") + "</div>" +
+        '<div class="dots"></div>';
       var dots = col.querySelector(".dots");
       if (!cas.length) dots.innerHTML = '<span class="vide">—</span>';
       cas.forEach(function (c) {
@@ -655,6 +705,15 @@ tfoot td{font-weight:700;border-bottom:0;border-top:2px solid var(--line)}
       });
       f.appendChild(col);
     });
+    // Synthèse : poids des cas en production (Déploiement, Captation) dans la valeur réalisée
+    var syn = document.getElementById("syntheseFrise");
+    if (!list.length) { syn.textContent = "Aucun cas d'usage ne correspond aux filtres."; return; }
+    var prod = list.filter(function (c) { return c.etape >= 4; }), amont = list.filter(function (c) { return c.etape < 4; });
+    var reaTot = somme(list, function (c) { return c.realisee; }), reaProd = somme(prod, function (c) { return c.realisee; });
+    var txt = "<b>" + prod.length + " cas sur " + list.length + "</b> sont en production (Déploiement ou Captation de la valeur)";
+    txt += reaTot ? " et génèrent <b>" + fmtPct(reaProd / reaTot * 100) + "</b> de la valeur réalisée." : ".";
+    if (amont.length) txt += " " + amont.length + " cas sont encore en amont, avec " + fmtK(somme(amont, function (c) { return c.visee; })) + " de valeur visée à concrétiser.";
+    syn.innerHTML = txt;
   }
 
   function legendeStatuts(id, suffixe) {
@@ -999,6 +1058,7 @@ tfoot td{font-weight:700;border-bottom:0;border-top:2px solid var(--line)}
     panel.setAttribute("aria-hidden", "false");
     overlay.classList.add("on");
     panel.scrollTop = 0;
+    lancerAnim(false);
     requestAnimationFrame(function () { tracer(mc.path); });
     document.getElementById("pFermer").focus({ preventScroll: true });
   }
@@ -1016,14 +1076,22 @@ tfoot td{font-weight:700;border-bottom:0;border-top:2px solid var(--line)}
 
   /* ---------- Export PDF ---------- */
   document.getElementById("btnPdf").addEventListener("click", function () {
-    finirAnimations();
+    arreterAnim();
     fermer();
-    window.print();
+    cacherTip();
+    // laisse le navigateur appliquer l'état final (sans animation) avant d'ouvrir l'impression
+    setTimeout(function () { window.print(); }, 150);
   });
-  window.addEventListener("beforeprint", function () { finirAnimations(); cacherTip(); });
+  window.addEventListener("beforeprint", function () { arreterAnim(); cacherTip(); });
+  if (window.matchMedia) {
+    var mqp = window.matchMedia("print");
+    var surPrint = function (e) { if (e.matches) arreterAnim(); };
+    if (mqp.addEventListener) mqp.addEventListener("change", surPrint); else if (mqp.addListener) mqp.addListener(surPrint);
+  }
 
   /* ---------- Mise à jour globale ---------- */
-  function maj() {
+  function maj(intro) {
+    lancerAnim(intro === true);
     var list = casFiltres();
     rendreFiltres();
     rendrePerimetre(list);
@@ -1035,9 +1103,9 @@ tfoot td{font-weight:700;border-bottom:0;border-top:2px solid var(--line)}
     rendreTableau(list);
   }
 
-  legendeStatuts("legFrise");
+  legendeStatuts("legFrise", "<span>Une pastille = un cas d'usage (numéro du tableau), couleur = statut</span>");
   legendeStatuts("legBulles", "<span>○ Taille de la bulle = coût IA mensuel</span>");
-  maj();
+  maj(true);
 })();
 </script>
 </body>
