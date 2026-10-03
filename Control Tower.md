@@ -2,7 +2,7 @@ Je suis consultant chez Wavestone. Demain, j'anime un atelier avec la direction 
 
 
 
-Crée une application web dans un seul fichier index.html autonome (HTML, CSS et JavaScript, sans aucune dépendance externe, sans bibliothèque, sans appel réseau). Tous les graphiques sont dessinés en SVG à la main. Toutes les données sont fictives et codées en dur dans le fichier.
+Crée une application web dans un seul fichier index-control-tower.html autonome (HTML, CSS et JavaScript, sans aucune dépendance externe, sans bibliothèque, sans appel réseau). Tous les graphiques sont dessinés en SVG à la main. Toutes les données sont fictives et codées en dur dans le fichier.
 
 
 
